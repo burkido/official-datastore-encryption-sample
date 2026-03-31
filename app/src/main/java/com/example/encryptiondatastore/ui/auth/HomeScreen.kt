@@ -19,8 +19,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.encryptiondatastore.ui.theme.EncryptionDataStoreTheme
 
 /**
  * Home screen shown when the user has an active session.
@@ -48,8 +50,23 @@ fun HomeScreen(
 
     val loggedIn = sessionState as? SessionState.LoggedIn ?: return
 
+    HomeScreenContent(
+        email = loggedIn.email,
+        token = loggedIn.token,
+        onLogout = viewModel::logout
+    )
+}
+
+@Composable
+fun HomeScreenContent(
+    email: String,
+    token: String,
+    onLogout: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 32.dp),
         verticalArrangement = Arrangement.Center,
@@ -63,7 +80,7 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = loggedIn.email,
+            text = email,
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary
         )
@@ -87,7 +104,7 @@ fun HomeScreen(
                 // Show only the first 10 characters to demonstrate the token exists
                 // without exposing it fully — the full value lives encrypted on disk.
                 Text(
-                    text = "${loggedIn.token}",
+                    text = token,
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -102,7 +119,7 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(40.dp))
 
         Button(
-            onClick = { viewModel.logout() },
+            onClick = onLogout,
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.error
@@ -112,3 +129,16 @@ fun HomeScreen(
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeScreenContentPreview() {
+    EncryptionDataStoreTheme {
+        HomeScreenContent(
+            email = "burak@example.com",
+            token = "demo_token_1712345678901",
+            onLogout = {}
+        )
+    }
+}
+
