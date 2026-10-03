@@ -77,7 +77,7 @@ dependencies {
     // Navigation
     implementation(libs.navigation.compose)
 
-    // Encrypted DataStore (datastore-tink 1.3.0-alpha07)
+    // Encrypted DataStore (datastore-tink 1.3.0-alpha11)
     implementation(libs.datastore)
     implementation(libs.datastore.tink)
     implementation(libs.tink.android)
